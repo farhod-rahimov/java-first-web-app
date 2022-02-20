@@ -8,7 +8,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -46,12 +45,6 @@ public class UsersService {
 
     private boolean areAllUserInputDataValid(String firstName, String lastName, String email, String phoneNumber, String password) {
         return isValidFirstAndLastNames(firstName, lastName) && isValidEmail(email) && isValidPhoneNumber(phoneNumber) && isValidPassword(password);
-//        boolean isValidFirstAndLastNames = isValidFirstAndLastNames(firstName, lastName);
-//        boolean isValidEmail = isValidEmail(email);
-//        boolean isValidPhoneNumber = isValidPhoneNumber(phoneNumber);
-//        boolean isValidPassword = isValidPassword(password);
-//
-//        return isValidFirstAndLastNames && isValidEmail && isValidPhoneNumber && isValidPassword;
 
     }
 
