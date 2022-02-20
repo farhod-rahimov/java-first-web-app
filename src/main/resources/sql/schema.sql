@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS users(
+    id BIGSERIAL,
+    firstName VARCHAR(70) NOT NULL,
+    lastName VARCHAR(70) NOT NULL,
+    email VARCHAR(70) NOT NULL UNIQUE,
+    phoneNumber VARCHAR(20) NOT NULL,
+    password VARCHAR(80) NOT NULL);
+
+TRUNCATE TABLE users;
