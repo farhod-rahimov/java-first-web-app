@@ -16,4 +16,15 @@
             <url-pattern>/jsp/secure/*</url-pattern>
         </web-resource-collection>
     </security-constraint>
+
+<!--    filter creating with xml. -->
+
+<!--    <filter>-->
+<!--        <filter-name>AuthenticationFilter</filter-name>-->
+<!--        <filter-class>edu.school21.cinema.filters.AuthenticationFilter</filter-class>-->
+<!--    </filter>-->
+<!--    <filter-mapping>-->
+<!--        <filter-name>AuthenticationFilter</filter-name>-->
+<!--        <url-pattern>/profile</url-pattern>-->
+<!--    </filter-mapping>-->
 </web-app>

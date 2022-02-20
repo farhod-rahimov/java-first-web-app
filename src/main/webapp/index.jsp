@@ -8,5 +8,6 @@
         <h1>Welcome to FWA!</h1>
         <h2><p><a href="/signIn">Go to SIGN IN page</a></p></h2>
         <h2><p><a href="/signUp">Go to SIGN UP page</a></p></h2>
+        <h2><p><a href="/profile">Go to PROFILE page</a></p></h2>
     </body>
 </html>
