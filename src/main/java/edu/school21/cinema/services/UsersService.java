@@ -18,7 +18,7 @@ public class UsersService {
         RequestDispatcher requestDispatcher;
 
         if (user.isPresent() && encoder.matches(req.getParameter("password"), user.get().getPassword())) {
-            req.getSession().setAttribute("user", user);
+            req.getSession().setAttribute("user", user.get());
             requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/secure/SignInSucceeded.jsp");
         }
         else {
