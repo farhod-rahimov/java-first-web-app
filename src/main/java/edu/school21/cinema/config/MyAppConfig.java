@@ -1,6 +1,8 @@
 package edu.school21.cinema.config;
 
 import com.zaxxer.hikari.HikariDataSource;
+import edu.school21.cinema.repositories.AuthenticationRepository;
+import edu.school21.cinema.repositories.AuthenticationRepositoryJdbcImpl;
 import edu.school21.cinema.repositories.UsersRepository;
 import edu.school21.cinema.repositories.UsersRepositoryJdbcImpl;
 import edu.school21.cinema.services.UsersService;
@@ -45,8 +47,14 @@ public class MyAppConfig {
 
     @Bean
     @Scope("singleton")
-    public UsersRepository repository() {
+    public UsersRepository usersRepository() {
         return new UsersRepositoryJdbcImpl(new JdbcTemplate(dataSource()));
+    }
+
+    @Bean
+    @Scope("singleton")
+    public AuthenticationRepository authenticationRepository() {
+        return new AuthenticationRepositoryJdbcImpl(new JdbcTemplate(dataSource()));
     }
 
     @Bean

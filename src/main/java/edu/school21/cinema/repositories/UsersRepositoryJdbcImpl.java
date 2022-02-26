@@ -32,8 +32,16 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     }
 
     @Override
-    public List<User> findAll() {
-        return jdbcTemplate.query("SELECT * FROM users", new UserMapper());
+    public Optional<User> findByEmail(String email) {
+        User user = jdbcTemplate.query("SELECT * FROM users WHERE email = ?", new UserMapper(), new Object[]{email})
+                .stream().findAny().orElse(null);
+
+        return Optional.ofNullable(user);
+    }
+
+    @Override
+    public void deleteByEmail(String email) {
+        // implementation is not required yet
     }
 
     @Override
@@ -45,11 +53,8 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        User user = jdbcTemplate.query("SELECT * FROM users WHERE email = ?", new UserMapper(), new Object[]{email})
-                .stream().findAny().orElse(null);
-
-        return Optional.ofNullable(user);
+    public List<User> findAll() {
+        return jdbcTemplate.query("SELECT * FROM users", new UserMapper());
     }
 
     @Override
@@ -69,11 +74,6 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
 
     @Override
     public void deleteById(Long id) {
-        // implementation is not required yet
-    }
-
-    @Override
-    public void deleteByEmail(String email) {
         // implementation is not required yet
     }
 }

@@ -17,6 +17,8 @@ public class UsersServiceException extends RuntimeException {
                 return "Error. A new user cannot be created. Please try again";
             case JDBC_NOT_FOUND:
                 return "Error. Driver \"org.postgresql.Driver\" not found";
+            case AUTH_INFO_SAVE_ERROR:
+                return "Error. Cannot save user authentication info";
         }
         return "Error. Something went wrong while executing the operation. Please check your input data and try again";
     }

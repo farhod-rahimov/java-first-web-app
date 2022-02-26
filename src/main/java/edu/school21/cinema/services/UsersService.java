@@ -1,6 +1,8 @@
 package edu.school21.cinema.services;
 
+import edu.school21.cinema.models.Authentication;
 import edu.school21.cinema.models.User;
+import edu.school21.cinema.repositories.AuthenticationRepository;
 import edu.school21.cinema.repositories.UsersRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -9,22 +11,39 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.Optional;
 
 public class UsersService {
 
-    public void signIn(HttpServletRequest req, HttpServletResponse resp, UsersRepository repository, PasswordEncoder encoder) throws ServletException, IOException {
+    public void signIn(HttpServletRequest req, HttpServletResponse resp, UsersRepository repository, AuthenticationRepository authRepository,
+                       PasswordEncoder encoder) throws ServletException, IOException {
         Optional<User> user = repository.findByEmail(req.getParameter("email"));
         RequestDispatcher requestDispatcher;
 
         if (user.isPresent() && encoder.matches(req.getParameter("password"), user.get().getPassword())) {
+            saveNewAuthentication(user.get().getId(), req, authRepository);
             req.getSession().setAttribute("user", user.get());
+            req.getSession().setAttribute("authentications", authRepository.findAllByUserId(user.get().getId()));
             requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/secure/SignInSucceeded.jsp");
         }
         else {
             requestDispatcher = req.getRequestDispatcher("/WEB-INF/jsp/secure/SignIn.jsp");
         }
         requestDispatcher.forward(req, resp);
+    }
+
+    void saveNewAuthentication(Long userId, HttpServletRequest request, AuthenticationRepository authRepository) {
+        Authentication authentication = createNewAuthentication(userId, request.getRemoteAddr());
+        authRepository.save(authentication);
+    }
+
+    Authentication createNewAuthentication(Long userId, String authIp) {
+        Date authDate = new Date(System.currentTimeMillis());
+        Time authTime = new Time(System.currentTimeMillis());
+
+        return new Authentication(authDate, authTime, authIp, userId);
     }
 
     public void signUp(HttpServletRequest req, UsersRepository repository, PasswordEncoder encoder) {
