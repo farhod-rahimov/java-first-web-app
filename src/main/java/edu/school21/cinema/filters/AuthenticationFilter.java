@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/profile", "/signIn", "/signUp"})
+@WebFilter(urlPatterns = {"/profile", "/signIn", "/signUp", "/images/*"})
 public class AuthenticationFilter implements Filter {
 
     @Override

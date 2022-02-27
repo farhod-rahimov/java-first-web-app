@@ -1,6 +1,6 @@
 -- table "users"
 
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users CASCADE;
 
 CREATE TABLE IF NOT EXISTS users(
     id BIGSERIAL PRIMARY KEY,
@@ -13,24 +13,26 @@ CREATE TABLE IF NOT EXISTS users(
 
 -- table "authentications"
 
-DROP TABLE IF EXISTS authentications;
+DROP TABLE IF EXISTS authentications CASCADE;
 
 CREATE TABLE IF NOT EXISTS authentications(
-    authId BIGSERIAL,
-    authDate DATE,
-    authTime TIME,
-    authIp VARCHAR(40),
+    authId BIGSERIAL PRIMARY KEY,
+    authDate DATE NOT NULL,
+    authTime TIME NOT NULL,
+    authIp VARCHAR(40) NOT NULL,
     userId BIGINT REFERENCES users(id)
 );
 
 -- table "images"
 
-DROP TABLE IF EXISTS images;
+DROP TABLE IF EXISTS images CASCADE;
 
 CREATE TABLE IF NOT EXISTS images(
-     id BIGSERIAL,
-     originalName VARCHAR,
-     uniqueName VARCHAR,
-     imagePath VARCHAR,
+     id BIGSERIAL PRIMARY KEY,
+     originalName VARCHAR NOT NULL,
+     uniqueName VARCHAR NOT NULL,
+     imagePath VARCHAR NOT NULL,
+     imageSize REAL NOT NULL,
+     MIME VARCHAR NOT NULL,
      userId BIGINT REFERENCES users(id)
 );

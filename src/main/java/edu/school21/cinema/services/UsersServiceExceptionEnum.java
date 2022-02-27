@@ -5,5 +5,6 @@ public enum UsersServiceExceptionEnum {
     USER_SAVE_ERROR,
     JDBC_NOT_FOUND,
     AUTH_INFO_SAVE_ERROR,
-    IMAGE_SAVE_ERROR;
+    IMAGE_SAVE_ERROR,
+    IMAGE_SEND_ERROR;
 }

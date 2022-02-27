@@ -26,7 +26,9 @@ public class ImagesRepositoryJdbcImpl implements ImagesRepository {
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4),
-                    resultSet.getLong(5));
+                    resultSet.getFloat(5),
+                    resultSet.getString(6),
+                    resultSet.getLong(7));
         }
     }
 
@@ -34,6 +36,18 @@ public class ImagesRepositoryJdbcImpl implements ImagesRepository {
     public List<Image> findAllByUserId(Long userId) {
         return jdbcTemplate.query("SELECT * FROM images WHERE userId = ?",
                 new ImagesRepositoryJdbcImpl.ImageMapper(), new Object[]{userId});
+    }
+
+    @Override
+    public Optional<Image> findByUniqueNameAndUserId(String uniqueName, Long userId) {
+        Image image = null;
+
+        if (!uniqueName.isEmpty()) {
+            image = jdbcTemplate.query("SELECT * FROM images WHERE uniqueName = ? AND userId = ?",
+                            new ImagesRepositoryJdbcImpl.ImageMapper(), new Object[]{uniqueName, userId})
+                    .stream().findAny().orElse(null);
+        }
+        return Optional.ofNullable(image);
     }
 
     @Override
@@ -57,8 +71,9 @@ public class ImagesRepositoryJdbcImpl implements ImagesRepository {
 
     @Override
     public void save(Image entity) {
-        int ret = jdbcTemplate.update("INSERT INTO images (originalName, uniqueName, imagePath, userId) VALUES (?, ?, ?, ?)",
-                entity.getOriginalName(), entity.getUniqueName(), entity.getImagePath(), entity.getUserId());
+        int ret = jdbcTemplate.update("INSERT INTO images (originalName, uniqueName, imagePath, imageSize, MIME, userId) " +
+                "VALUES (?, ?, ?, ?, ?, ?)", entity.getOriginalName(), entity.getUniqueName(), entity.getImagePath(),
+                entity.getImageSize(), entity.getMIME(), entity.getUserId());
 
         if (ret == 0) {
             throw new UsersServiceException(UsersServiceExceptionEnum.IMAGE_SAVE_ERROR);

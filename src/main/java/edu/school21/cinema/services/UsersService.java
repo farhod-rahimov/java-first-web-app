@@ -1,6 +1,5 @@
 package edu.school21.cinema.services;
 
-import com.sun.javafx.binding.StringFormatter;
 import edu.school21.cinema.models.Authentication;
 import edu.school21.cinema.models.Image;
 import edu.school21.cinema.models.User;
@@ -9,13 +8,12 @@ import edu.school21.cinema.repositories.ImagesRepository;
 import edu.school21.cinema.repositories.UsersRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Optional;
@@ -66,7 +64,6 @@ public class UsersService {
 
     private boolean areAllUserInputDataValid(String firstName, String lastName, String email, String phoneNumber, String password) {
         return isValidFirstAndLastNames(firstName, lastName) && isValidEmail(email) && isValidPhoneNumber(phoneNumber) && isValidPassword(password);
-
     }
 
     private boolean isValidFirstAndLastNames(String firstName, String lastName) {
@@ -130,10 +127,10 @@ public class UsersService {
         String originalName = part.getSubmittedFileName();
         String uniqueName = getUniqueName(user.getId(), originalName);
         String imagePath = getImagePath(storagePath, uniqueName);
-        Image image = new Image(originalName, uniqueName, imagePath, user.getId());
+        Float imageSize = saveImageToHardDrive(part.getInputStream(), imagePath);
+        String MIME = part.getContentType();
 
-        saveImageToHardDrive(part.getInputStream(), imagePath);
-        imagesRepository.save(image);
+        imagesRepository.save(new Image(originalName, uniqueName, imagePath, imageSize, MIME, user.getId()));
     }
 
     private String getUniqueName(Long userId, String originalName) {
@@ -145,8 +142,9 @@ public class UsersService {
         return storagePath + uniqueName;
     }
 
-    private void saveImageToHardDrive(InputStream inputStream, String imagePath) throws IOException {
+    private Float saveImageToHardDrive(InputStream inputStream, String imagePath) throws IOException {
         FileOutputStream fileOutputStream = null;
+        Float imageSize = 0f;
         byte buf[] = new byte[1024];
         int read;
 
@@ -160,12 +158,38 @@ public class UsersService {
                     break;
                 }
                 fileOutputStream.write(buf, 0, read);
+                imageSize += read;
             }
         } finally {
             if (fileOutputStream != null) {
                 fileOutputStream.close();
             }
             inputStream.close();
+        }
+        return imageSize / 1024;
+    }
+
+    public void sendImage(ServletOutputStream outputStream, String imagePath) throws IOException {
+        FileInputStream fileInputStream = null;
+        byte[] buf = new byte[1024];
+        int read;
+
+        try {
+            fileInputStream = new FileInputStream(imagePath);
+
+            while (true) {
+                read = fileInputStream.read(buf, 0, 1024);
+
+                if (read < 0) {
+                    break;
+                }
+                outputStream.write(buf, 0, read);
+            }
+        } finally {
+            if (fileInputStream != null) {
+                fileInputStream.close();
+            }
+            outputStream.close();
         }
     }
 }

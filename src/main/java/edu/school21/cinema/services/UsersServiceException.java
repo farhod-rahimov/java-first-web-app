@@ -21,6 +21,8 @@ public class UsersServiceException extends RuntimeException {
                 return "Error. Cannot save user authentication info";
             case IMAGE_SAVE_ERROR:
                 return "Error. Cannot save image";
+            case IMAGE_SEND_ERROR:
+                return "Error. Cannot send image";
         }
         return "Error. Something went wrong while executing the operation. Please check your input data and try again";
     }
