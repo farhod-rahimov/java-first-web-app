@@ -22,7 +22,7 @@
         </style>
     </head>
     <body>
-        <h1><c:out value="Welcome back ${sessionScope.user.getFirstName()} ${sessionScope.user.getLastName()}!"/></h1>
+        <h1><c:out value="${sessionScope.user.getFirstName()} ${sessionScope.user.getLastName()}, ${sessionScope.user.getEmail()}"/></h1>
         <table>
             <tr>
                 <th style="text-align:center">Date</th>
