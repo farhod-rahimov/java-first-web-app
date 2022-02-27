@@ -6,6 +6,7 @@ import edu.school21.cinema.models.User;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebFilter(urlPatterns = {"/profile", "/signIn", "/signUp", "/images/*"})
@@ -18,13 +19,14 @@ public class AuthenticationFilter implements Filter {
         RequestDispatcher requestDispatcher;
 
         if (user != null && (urlPattern.equals("/signIn") || urlPattern.equals("/signUp"))) {
-            requestDispatcher = servletRequest.getRequestDispatcher("/profile");
-            requestDispatcher.forward(servletRequest, servletResponse);
+            ((HttpServletResponse)servletResponse).sendRedirect("/profile");
         }
         else if (user == null && (!urlPattern.equals("/signIn") && !urlPattern.equals("/signUp"))) {
             requestDispatcher = servletRequest.getRequestDispatcher("/WEB-INF/jsp/secure/errorPages/403.jsp");
             requestDispatcher.forward(servletRequest, servletResponse);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
+        else {
+            filterChain.doFilter(servletRequest, servletResponse);
+        }
     }
 }
