@@ -15,5 +15,6 @@ public class MyAppContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
         servletContext.setAttribute("myAppContext", new AnnotationConfigApplicationContext(MyAppConfig.class));
+        servletContext.setRequestCharacterEncoding("UTF-8");
     }
 }

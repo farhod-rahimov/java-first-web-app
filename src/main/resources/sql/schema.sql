@@ -29,7 +29,8 @@ DROP TABLE IF EXISTS images;
 
 CREATE TABLE IF NOT EXISTS images(
      id BIGSERIAL,
+     originalName VARCHAR,
      uniqueName VARCHAR,
-     filePath VARCHAR,
+     imagePath VARCHAR,
      userId BIGINT REFERENCES users(id)
 );

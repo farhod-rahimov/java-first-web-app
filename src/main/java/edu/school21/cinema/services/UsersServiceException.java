@@ -19,6 +19,8 @@ public class UsersServiceException extends RuntimeException {
                 return "Error. Driver \"org.postgresql.Driver\" not found";
             case AUTH_INFO_SAVE_ERROR:
                 return "Error. Cannot save user authentication info";
+            case IMAGE_SAVE_ERROR:
+                return "Error. Cannot save image";
         }
         return "Error. Something went wrong while executing the operation. Please check your input data and try again";
     }

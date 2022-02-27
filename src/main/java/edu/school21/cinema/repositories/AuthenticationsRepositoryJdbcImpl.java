@@ -11,11 +11,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class AuthenticationRepositoryJdbcImpl implements AuthenticationRepository {
+public class AuthenticationsRepositoryJdbcImpl implements AuthenticationsRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    public AuthenticationRepositoryJdbcImpl(JdbcTemplate jdbcTemplate) {
+    public AuthenticationsRepositoryJdbcImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -33,7 +33,7 @@ public class AuthenticationRepositoryJdbcImpl implements AuthenticationRepositor
     @Override
     public List<Authentication> findAllByUserId(Long userId) {
         return jdbcTemplate.query("SELECT * FROM authentications WHERE userId = ?",
-                        new AuthenticationRepositoryJdbcImpl.AuthenticationMapper(), new Object[]{userId});
+                        new AuthenticationsRepositoryJdbcImpl.AuthenticationMapper(), new Object[]{userId});
     }
 
     @Override
@@ -44,7 +44,7 @@ public class AuthenticationRepositoryJdbcImpl implements AuthenticationRepositor
     @Override
     public Optional<Authentication> findById(Long id) {
         Authentication auth = jdbcTemplate.query("SELECT * FROM authentications WHERE authId = ?",
-                        new AuthenticationRepositoryJdbcImpl.AuthenticationMapper(), new Object[]{id})
+                        new AuthenticationsRepositoryJdbcImpl.AuthenticationMapper(), new Object[]{id})
                 .stream().findAny().orElse(null);
 
         return Optional.ofNullable(auth);
@@ -52,7 +52,7 @@ public class AuthenticationRepositoryJdbcImpl implements AuthenticationRepositor
 
     @Override
     public List<Authentication> findAll() {
-        return jdbcTemplate.query("SELECT * FROM authentications", new AuthenticationRepositoryJdbcImpl.AuthenticationMapper());
+        return jdbcTemplate.query("SELECT * FROM authentications", new AuthenticationsRepositoryJdbcImpl.AuthenticationMapper());
     }
 
     @Override

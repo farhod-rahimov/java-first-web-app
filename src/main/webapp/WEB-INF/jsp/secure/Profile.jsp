@@ -36,5 +36,26 @@
                 </tr>
             </c:forEach>
         </table>
+
+<%--        <table>--%>
+<%--            <tr>--%>
+<%--                <th style="text-align:center">File name</th>--%>
+<%--                <th style="text-align:center">Size</th>--%>
+<%--                <th style="text-align:center">MIME</th>--%>
+<%--            </tr>--%>
+<%--            <c:forEach var="auth" items="${sessionScope.authentications}">--%>
+<%--                <tr>--%>
+<%--                    <td style="text-align:left">${auth.getAuthDate()}</td>--%>
+<%--                    <td style="text-align:left">${auth.getAuthTime()}</td>--%>
+<%--                    <td style="text-align:left">${auth.getAuthIp()}</td>--%>
+<%--                </tr>--%>
+<%--            </c:forEach>--%>
+<%--        </table>--%>
+
+        <form enctype="multipart/form-data" action="/images" method="POST">
+            <h2>Upload new image</h2>
+            <input type="file" name="image" multiple accept="*/*"><br/>
+            <input type="submit" value="upload">
+        </form>
     </body>
 </html>

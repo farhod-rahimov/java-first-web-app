@@ -1,6 +1,6 @@
 package edu.school21.cinema.servlets;
 
-import edu.school21.cinema.repositories.AuthenticationRepository;
+import edu.school21.cinema.repositories.AuthenticationsRepository;
 import edu.school21.cinema.repositories.UsersRepository;
 import edu.school21.cinema.services.UsersService;
 import org.springframework.context.ApplicationContext;
@@ -37,7 +37,7 @@ public class SignInServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UsersService usersService = myAppContext.getBean(UsersService.class);
         UsersRepository usersRepository = myAppContext.getBean(UsersRepository.class);
-        AuthenticationRepository authRepository = myAppContext.getBean(AuthenticationRepository.class);
+        AuthenticationsRepository authRepository = myAppContext.getBean(AuthenticationsRepository.class);
         PasswordEncoder passwordEncoder = myAppContext.getBean(PasswordEncoder.class);
 
         usersService.signIn(req, resp, usersRepository, authRepository, passwordEncoder);

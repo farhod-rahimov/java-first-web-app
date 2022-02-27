@@ -1,15 +1,15 @@
 package edu.school21.cinema.config;
 
 import com.zaxxer.hikari.HikariDataSource;
-import edu.school21.cinema.repositories.AuthenticationRepository;
-import edu.school21.cinema.repositories.AuthenticationRepositoryJdbcImpl;
-import edu.school21.cinema.repositories.UsersRepository;
-import edu.school21.cinema.repositories.UsersRepositoryJdbcImpl;
+import edu.school21.cinema.repositories.*;
 import edu.school21.cinema.services.UsersService;
 import edu.school21.cinema.services.UsersServiceException;
 import edu.school21.cinema.services.UsersServiceExceptionEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +20,9 @@ import javax.sql.DataSource;
 @ComponentScan({"edu.school21.cinema.repositories", "edu.school21.cinema.services"})
 @PropertySource("file:${webapp.root}/WEB-INF/application.properties")
 public class MyAppConfig {
+
+    private Environment env;
+
     @Value("${db.url}")
     private String dbUrl;
 
@@ -28,6 +31,11 @@ public class MyAppConfig {
 
     @Value("${db.password}")
     private String dbPassword;
+
+    @Autowired
+    public void setEnv(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     @Scope("singleton")
@@ -53,8 +61,14 @@ public class MyAppConfig {
 
     @Bean
     @Scope("singleton")
-    public AuthenticationRepository authenticationRepository() {
-        return new AuthenticationRepositoryJdbcImpl(new JdbcTemplate(dataSource()));
+    public AuthenticationsRepository authenticationsRepository() {
+        return new AuthenticationsRepositoryJdbcImpl(new JdbcTemplate(dataSource()));
+    }
+
+    @Bean
+    @Scope("singleton")
+    public ImagesRepository imagesRepository() {
+        return new ImagesRepositoryJdbcImpl(new JdbcTemplate(dataSource()));
     }
 
     @Bean

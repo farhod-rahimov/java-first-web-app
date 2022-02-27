@@ -4,7 +4,7 @@ import edu.school21.cinema.models.Authentication;
 
 import java.util.List;
 
-public interface AuthenticationRepository extends CrudRepository<Authentication> {
+public interface AuthenticationsRepository extends CrudRepository<Authentication> {
     List<Authentication> findAllByUserId(Long userId);
     void deleteAllByUserId(Long userId);
 }
